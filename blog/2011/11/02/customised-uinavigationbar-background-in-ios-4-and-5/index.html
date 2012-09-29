@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Customised UINavigationBar background in iOS 4 and 5 - Beyond The Corner</title>
+  <meta name="author" content="Marcus Ramsden">
+
+  
+  <meta name="description" content="Recently I came across the situation that I needed to support a custom background for a UINavigationBar in an app that had to work for both iOS 4 and &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mramsden.github.com/blog/2011/11/02/customised-uinavigationbar-background-in-ios-4-and-5/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Beyond The Corner" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Beyond The Corner</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mramsden.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Customised UINavigationBar Background in iOS 4 and 5</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-11-02T00:00:00+00:00" pubdate data-updated="true">Nov 2<span>nd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Recently I came across the situation that I needed to support a custom background for a UINavigationBar in an app that had to work for both iOS 4 and iOS 5. After some Googling I came up with this approach.</p>
+
+<p>First the easy one, iOS 5;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">if</span> <span class="p">([[</span><span class="n">UINavigationBar</span> <span class="n">class</span><span class="p">]</span> <span class="nl">respondsToSelector:</span><span class="k">@selector</span><span class="p">(</span><span class="n">appearance</span><span class="p">)])</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">navigationBar</span> <span class="nl">setBackgroundImage:</span><span class="n">navigationBackgroundImage</span> <span class="nl">forBarMetrics:</span><span class="n">UIBarMetricsDefault</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note the test on the navigation bar class to check if it supports the UI proxy extensions. This must be done in iOS 4 otherwise a crash will result.</p>
+
+<p>Now for iOS 4 we have to create a category, fortunately this is very simple;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@implementation</span> <span class="nc">UINavigationBar</span> <span class="nl">(CustomBackground)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">drawRect:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">rect</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">UIImage</span> <span class="o">*</span><span class="n">navBackgroundImage</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIImage</span> <span class="nl">imageNamed:</span><span class="s">@&quot;navigation-background&quot;</span><span class="p">]</span> <span class="nl">stretchableImageWithLeftCapWidth:</span><span class="mf">0.0</span> <span class="nl">topCapHeight:</span><span class="mf">0.0</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">navBackgroundImage</span> <span class="nl">drawInRect:</span><span class="n">rect</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">@end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The <code>drawRect:</code> method is not called in iOS 5 so it is safe to leave this category in your app. Just as a small side note, Apple has deprecated <code>strechableImageLeftCapWidth:topCapHeight:</code> in iOS 5 in favour of <code>resizableImageWithCapInsets:</code>.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Marcus Ramsden</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-11-02T00:00:00+00:00" pubdate data-updated="true">Nov 2<span>nd</span>, 2011</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mramsden.github.com/blog/2011/11/02/customised-uinavigationbar-background-in-ios-4-and-5/" data-via="" data-counturl="http://mramsden.github.com/blog/2011/11/02/customised-uinavigationbar-background-in-ios-4-and-5/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/05/14/creating-a-url-query-string-using-an-nsdictionary/" title="Previous Post: Creating a URL query string using an NSDictionary">&laquo; Creating a URL query string using an NSDictionary</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/11/02/customised-uinavigationbar-background-in-ios-4-and-5/">Customised UINavigationBar background in iOS 4 and 5</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/05/14/creating-a-url-query-string-using-an-nsdictionary/">Creating a URL query string using an NSDictionary</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/01/15/android-on-os-x-without-eclipse/">Android development on OS X without Eclipse</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/04/22/virtualbox-sdk-machine-status/">VirtualBox SDK Machine Status</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2009/10/13/zend-framework-and-twig/">Zend Framework and Twig</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Marcus Ramsden -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

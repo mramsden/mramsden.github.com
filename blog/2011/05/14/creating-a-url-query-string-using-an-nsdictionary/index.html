@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Creating a URL query string using an NSDictionary - Beyond The Corner</title>
+  <meta name="author" content="Marcus Ramsden">
+
+  
+  <meta name="description" content="I finally got round to making this into a category. It&#8217;s a simple function for turning a dictionary into a query string, ready for appending to &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mramsden.github.com/blog/2011/05/14/creating-a-url-query-string-using-an-nsdictionary/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Beyond The Corner" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Beyond The Corner</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mramsden.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Creating a URL Query String Using an NSDictionary</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-14T00:00:00+01:00" pubdate data-updated="true">May 14<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I finally got round to making this into a category. It&#8217;s a simple function for turning a dictionary into a query string, ready for appending to the end of a URL.</p>
+
+<div><script src='https://gist.github.com/972328.js?file='></script>
+<noscript><pre><code>#import &lt;Foundation/Foundation.h&gt;
+
+
+@interface NSDictionary (QueryStringBuilder)
+
+- (NSString *)queryString;
+
+@end</code></pre></noscript></div>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Marcus Ramsden</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-05-14T00:00:00+01:00" pubdate data-updated="true">May 14<span>th</span>, 2011</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mramsden.github.com/blog/2011/05/14/creating-a-url-query-string-using-an-nsdictionary/" data-via="" data-counturl="http://mramsden.github.com/blog/2011/05/14/creating-a-url-query-string-using-an-nsdictionary/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/01/15/android-on-os-x-without-eclipse/" title="Previous Post: Android development on OS X without Eclipse">&laquo; Android development on OS X without Eclipse</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/11/02/customised-uinavigationbar-background-in-ios-4-and-5/" title="Next Post: Customised UINavigationBar background in iOS 4 and 5">Customised UINavigationBar background in iOS 4 and 5 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/11/02/customised-uinavigationbar-background-in-ios-4-and-5/">Customised UINavigationBar background in iOS 4 and 5</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/05/14/creating-a-url-query-string-using-an-nsdictionary/">Creating a URL query string using an NSDictionary</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/01/15/android-on-os-x-without-eclipse/">Android development on OS X without Eclipse</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/04/22/virtualbox-sdk-machine-status/">VirtualBox SDK Machine Status</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2009/10/13/zend-framework-and-twig/">Zend Framework and Twig</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Marcus Ramsden -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

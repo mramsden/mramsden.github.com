@@ -1,0 +1,576 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Android development on OS X without Eclipse - Beyond The Corner</title>
+  <meta name="author" content="Marcus Ramsden">
+
+  
+  <meta name="description" content="I am finally getting started with playing around with some Android development and the first order of business is getting my development environment &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mramsden.github.com/blog/2011/01/15/android-on-os-x-without-eclipse/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Beyond The Corner" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Beyond The Corner</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mramsden.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Android Development on OS X Without Eclipse</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-01-15T00:00:00+00:00" pubdate data-updated="true">Jan 15<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I am finally getting started with playing around with some Android development and the first order of business is getting my development environment set up. I&#8217;m going to be doing most of my development on OS X using Apache Maven and Textmate, of course in your situation you could use your favourite text editor, I side more with vim fans ;) I&#8217;m making the assumption that the reader is comfortable with the terminal, additionally a dosage of no fear if you are following these steps.</p>
+
+<h2>Homebrew</h2>
+
+<p>To get the ball rolling we&#8217;re going to start with everyone&#8217;s favourite missing package manager, <a href="http://mxcl.github.com/homebrew/">Homebrew</a>. If you haven&#8217;t got Homebrew installed already then you&#8217;ll be glad to know that installation is pretty simple to do;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>ruby -e <span class="s2">&quot;$(curl -fsSLk https://gist.github.com/raw/323731/install_homebrew.rb)&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you haven&#8217;t got Xcode installed yet this script will install it for you. If this is the case you may want to go get a drink as it may take some time.</p>
+
+<h2>Android SDK</h2>
+
+<p>Now that we have Homebrew installed we can get the Android SDK tools installed. Thanks to Homebrew this is a simple process and you don&#8217;t even have to visit a website, this appeals to the exceedingly lazy developer in me. Just go ahead and run;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>brew install android
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Once Homebrew has installed the Android SDK you can just straight away run the android command thanks to Homebrew setting everything up for you. So go ahead and run the Android SDK and AVD manager by running <code>android</code> on the command line. Then you can make your AVD and install the desired versions of the Android SDK. You may need to update your android tools since it appears that the Homebrew formula is a little out of date with the current version, but this is simple enough to do.</p>
+
+<p>At this point let&#8217;s create an android project to make sure that everything is ready to go. I created a HelloAndroid application targeted for Android 2.1;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>android create project --package com.example.helloandroid <span class="se">\</span>
+</span><span class='line'>  --activity HelloAndroid <span class="se">\</span>
+</span><span class='line'>  --target 3 <span class="se">\</span>
+</span><span class='line'>  --path &lt;path-to-project-folder&gt;/HelloAndroid
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Then to make sure that everything is set up right and working fire up your Android emulator and then run <code>ant install</code>. Once this is done go ahead and make sure the app runs on the emulator. Assuming this works then run <code>ant uninstall</code> to uninstall the app from the emulator.</p>
+
+<h2>Apache Maven</h2>
+
+<p>Whilst I do prefer to avoid a full blown IDE I do like some automation in places and Apache Maven is a big old help with this. The first thing to do is get maven installed, again thanks to Homebrew this is simple;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>brew install maven
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we need to get the project set up with maven. We will be using the <a href="http://code.google.com/p/maven-android-plugin">Maven Android Plugin</a> to help us out. The first thing we need to do is remove the following files;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rm -r bin build.xml build.properties libs
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next we setup our environment for the Maven Android Plugin. We need to set a <code>ANDROID_HOME</code> environment variable. In .bash_profile add the following line;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">export </span><span class="nv">ANDROID_HOME</span><span class="o">=</span><span class="sb">`</span>brew --prefix android<span class="sb">`</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Setting up the project for use with maven needs the following <code>pom.xml</code> file created in the root of the project;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span>
+</span><span class='line'>  <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+</span><span class='line'>  <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>com.example.helloandroid<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>helloandroid<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;packaging&gt;</span>apk<span class="nt">&lt;/packaging&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;version&gt;</span>0.0.1-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;name&gt;</span>HelloAndroid<span class="nt">&lt;/name&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;dependencies&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;groupId&gt;</span>com.google.android<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;artifactId&gt;</span>android<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;version&gt;</span>2.1.2<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;scope&gt;</span>provided<span class="nt">&lt;/scope&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/dependencies&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nt">&lt;build&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;sourceDirectory&gt;</span>src<span class="nt">&lt;/sourceDirectory&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;plugins&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>maven-compiler-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;source&gt;</span>1.6<span class="nt">&lt;/source&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;target&gt;</span>1.6<span class="nt">&lt;/target&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;groupId&gt;</span>com.jayway.maven.plugins.android.generation2<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;artifactId&gt;</span>maven-android-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;sdk&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;path&gt;</span>${env.ANDROID_HOME}<span class="nt">&lt;/path&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;platform&gt;</span>1.6<span class="nt">&lt;/platform&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/sdk&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;emulator&gt;</span>
+</span><span class='line'>             <span class="nt">&lt;avd&gt;</span>standard<span class="nt">&lt;/avd&gt;</span>
+</span><span class='line'>             <span class="nt">&lt;wait&gt;</span>6000<span class="nt">&lt;/wait&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;/emulator&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;deleteConflictingFiles&gt;</span>true<span class="nt">&lt;/deleteConflictingFiles&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;extensions&gt;</span>true<span class="nt">&lt;/extensions&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/plugins&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/build&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;/project&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Once the <code>pom.xml</code> file is created then we can see if it is all set up right by running;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mvn <span class="nb">help</span>:describe -Dplugin<span class="o">=</span>android
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Running this should give details about goals available for the android maven plugin. For reference here are the goals;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Name: Maven Android Plugin - maven-android-plugin
+</span><span class='line'>Description: Maven Plugin <span class="k">for </span>Android
+</span><span class='line'>Group Id: com.jayway.maven.plugins.android.generation2
+</span><span class='line'>Artifact Id: maven-android-plugin
+</span><span class='line'>Version: 2.8.3
+</span><span class='line'>Goal Prefix: android
+</span><span class='line'>
+</span><span class='line'>This plugin has 16 goals:
+</span><span class='line'>
+</span><span class='line'>android:apk
+</span><span class='line'>  Description: Creates the apk file. By default signs it with debug keystore.
+</span><span class='line'>    Change that by setting configuration parameter
+</span><span class='line'>    &lt;sign&gt;&lt;debug&gt;false&lt;/debug&gt;&lt;/sign&gt;.
+</span><span class='line'>
+</span><span class='line'>android:deploy
+</span><span class='line'>  Description: Deploys the built apk file, or another specified apk, to a
+</span><span class='line'>    connected device.
+</span><span class='line'>    Automatically performed when running mvn integration-test <span class="o">(</span>or mvn install<span class="o">)</span>
+</span><span class='line'>    on a project with instrumentation tests.
+</span><span class='line'>
+</span><span class='line'>android:deploy-dependencies
+</span><span class='line'>  Description: Deploys all directly declared dependencies of &lt;<span class="nb">type</span>&gt;apk&lt;/type&gt;
+</span><span class='line'>    in this project<span class="err">&#39;</span>s pom.
+</span><span class='line'>    Usually used in a project with instrumentation tests, to deploy the apk to
+</span><span class='line'>    <span class="nb">test </span>onto the device before running the deploying and running the
+</span><span class='line'>    instrumentation tests apk.
+</span><span class='line'>    Automatically performed when running mvn integration-test <span class="o">(</span>or mvn install<span class="o">)</span>
+</span><span class='line'>    on a project with instrumentation tests.
+</span><span class='line'>
+</span><span class='line'>android:dex
+</span><span class='line'>  Description: Converts compiled Java classes to the Android dex format.
+</span><span class='line'>
+</span><span class='line'>android:emulator-start
+</span><span class='line'>  Description: EmulatorStartMojo can start the Android Emulator with a
+</span><span class='line'>    specified Android Virtual Device <span class="o">(</span>avd<span class="o">)</span>.
+</span><span class='line'>
+</span><span class='line'>android:emulator-stop
+</span><span class='line'>  Description: EmulatorStartMojo can stop the Android Emulator with a
+</span><span class='line'>    specified Android Virtual Device <span class="o">(</span>avd<span class="o">)</span>.
+</span><span class='line'>
+</span><span class='line'>android:generate-sources
+</span><span class='line'>  Description: Generates R.java based on resources specified by the resources
+</span><span class='line'>    configuration parameter.
+</span><span class='line'>    Generates java files based on aidl files.
+</span><span class='line'>
+</span><span class='line'>    If the configuration parameter deleteConflictingFiles is <span class="nb">true</span> <span class="o">(</span>which it is
+</span><span class='line'>    by default<span class="o">)</span>, this goal has the following side-effects:
+</span><span class='line'>    - deletes any R.java files found in the <span class="nb">source </span>directory.
+</span><span class='line'>    - deletes any .java files with the same name as an .aidl file found in the
+</span><span class='line'>      <span class="nb">source </span>directory.
+</span><span class='line'>    - deletes any Thumbs.db files found in the resource directory.
+</span><span class='line'>
+</span><span class='line'>android:instrument
+</span><span class='line'>  Description: Runs the instrumentation apk on device.
+</span><span class='line'>
+</span><span class='line'>android:internal-integration-test
+</span><span class='line'>  Description: Internal. Do not use.
+</span><span class='line'>    Called automatically when the lifecycle reaches phase integration-test.
+</span><span class='line'>    Figures out whether to call goals in this phase; and <span class="k">if </span>so, calls
+</span><span class='line'>    android:instrument.
+</span><span class='line'>
+</span><span class='line'>android:internal-pre-integration-test
+</span><span class='line'>  Description: Internal. Do not use.
+</span><span class='line'>    Called automatically when the lifecycle reaches phase pre-integration-test.
+</span><span class='line'>    Figures out whether to call goals in this phase; and <span class="k">if </span>so, calls
+</span><span class='line'>    android:deploy-dependencies and android:deploy.
+</span><span class='line'>
+</span><span class='line'>android:pull
+</span><span class='line'>  Description: Copy file/dir from device.
+</span><span class='line'>
+</span><span class='line'>android:push
+</span><span class='line'>  Description: Copy file/dir to device.
+</span><span class='line'>
+</span><span class='line'>android:redeploy
+</span><span class='line'>  Description: Redeploys the built apk file, or another specified apk, to a
+</span><span class='line'>    connected device. This simply tries to undeploy the APK and re-deploy it.
+</span><span class='line'>
+</span><span class='line'>android:undeploy
+</span><span class='line'>  Description: Undeploys the built apk file, or another specified apk, from a
+</span><span class='line'>    connected device.
+</span><span class='line'>
+</span><span class='line'>android:unpack
+</span><span class='line'>  Description: unpack library.
+</span><span class='line'>
+</span><span class='line'>android:zipalign
+</span><span class='line'>  Description: ZipalignMojo can run the zipalign <span class="nb">command </span>against the apk.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you see that then you are all set and ready to go. I&#8217;m hoping to get some more blog posts up about my development exploits on android. If you want to read more about the maven android plugin then have a look at their website <a href="http://code.google.com/p/maven-android-plugin">http://code.google.com/p/maven-android-plugin</a>.</p>
+
+<p><strong>Update 1:</strong> I did have some troubles with the <code>android:emulator-start</code> goal. But it turned out I had missed the emulator block in the maven-android-plugin configuration block. Found this information in <a href="http://www.sonatype.com/books/mvnref-book/reference/android-dev-sect-custom-details.html">Sonatype&#8217;s Maven Reference Guide</a>. Also I corrected a typo in the pom.xml definition.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Marcus Ramsden</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-01-15T00:00:00+00:00" pubdate data-updated="true">Jan 15<span>th</span>, 2011</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://mramsden.github.com/blog/2011/01/15/android-on-os-x-without-eclipse/" data-via="" data-counturl="http://mramsden.github.com/blog/2011/01/15/android-on-os-x-without-eclipse/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2010/04/22/virtualbox-sdk-machine-status/" title="Previous Post: VirtualBox SDK Machine Status">&laquo; VirtualBox SDK Machine Status</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/05/14/creating-a-url-query-string-using-an-nsdictionary/" title="Next Post: Creating a URL query string using an NSDictionary">Creating a URL query string using an NSDictionary &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/11/02/customised-uinavigationbar-background-in-ios-4-and-5/">Customised UINavigationBar background in iOS 4 and 5</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/05/14/creating-a-url-query-string-using-an-nsdictionary/">Creating a URL query string using an NSDictionary</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/01/15/android-on-os-x-without-eclipse/">Android development on OS X without Eclipse</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/04/22/virtualbox-sdk-machine-status/">VirtualBox SDK Machine Status</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2009/10/13/zend-framework-and-twig/">Zend Framework and Twig</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Marcus Ramsden -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

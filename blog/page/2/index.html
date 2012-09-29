@@ -1,0 +1,488 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Beyond The Corner</title>
+  <meta name="author" content="Marcus Ramsden">
+
+  
+  <meta name="description" content="So I just came across some weirdness on my default install of PHP on Snow Leopard. I wanted to install the latest version of PHPUnit in order to &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://mramsden.github.com/blog/page/2/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Beyond The Corner" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Beyond The Corner</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:mramsden.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/10/09/pear-update-issues-on-snow-leopard/">PEAR Update Issues on Snow Leopard</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-10-09T00:00:00+01:00" pubdate data-updated="true">Oct 9<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>So I just came across some weirdness on my default install of PHP on Snow Leopard. I wanted to install the latest version of PHPUnit in order to carry out some testing, but it was asking me to update PEAR.</p>
+
+<p>So I ran the usual PEAR update command;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo pear upgrade pear
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This appeared to run without any issues. But subsequently whenever I attempted to run PEAR I was greeted with the following error message;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>/usr/local/bin/pear: fork: Resource temporarily unavailable
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I took a look inside the offending file as it is just a simple command to run the PEAR script. It looked like this;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>pear /usr/lib/php/pearcmd.php
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Obviously the script was infinitely attempting to spawn itself causing the resource temporarily unavailable error. So the simple fix was to change the script to the following;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>php /usr/lib/php/pearcmd.php <span class="nv">$@</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I&#8217;m not quite sure why the script changed when I upgraded but it appeared to. I figured I should pop this note up in case anyone else gets caught out, or indeed I forget and get caught out again. Any insight on why this might have happened would be appreciated.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/09/21/pretty-urls-with-eprints/">Pretty URLs With EPrints</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-09-21T00:00:00+01:00" pubdate data-updated="true">Sep 21<span>st</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Recently I have been working on a project which was focused on adding Homepages and Profiles for users to EPrints repositories called MicroViews. Currently when a user logs into an EPrints repository all you are presented with is your Manage Deposits page. With MicroViews the user will be presented with a Homepage which provides them with various pieces of information about the repository which is relevant to them, for example what are their most popular publications and if there are any issues with their publications that have been raised at the last audit.</p>
+
+<p>The extension also adds a profile page to EPrints for each user. The idea of profile pages is to provide a static external facing page which the rest of the world can see. This page would include basic information about the user and the publications they have added to the repository. This effectively provides a biography of the user with regards to the repository.</p>
+
+<p>One thing that we wanted to do is create pretty URLs for the user profiles of the form http://examplerepository.com/profile/. Initially we did this by making a modification to perl_lib/EPrints/Apache/Rewrite.pm but this was not the ideal situation for a plugin since this is a modification to the core code of EPrints. The problem with this approach is that if the repository administrator went on to update their core EPrints install then they would end up losing the hand made modification which is required for the plugin and they would have to add it again.</p>
+
+<p>Instead we investigated creating a custom URL handler and adding it to the request handling chain using archives/ARCHIVEID/cfg/apachevhosts.conf. By doing this we won&#8217;t change any core EPrints code and all of the changes will be safe from any auto generated changes. The first thing we did was create a custom rewrite handler which took the following shape;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="nb">package</span> <span class="nn">EPrints::Plugin::MePrints::Apache::</span><span class="n">Rewrite</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="n">strict</span><span class="p">;</span>
+</span><span class='line'><span class="k">use</span> <span class="n">warnings</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">our</span> <span class="nv">@ISA</span> <span class="o">=</span> <span class="sx">qw/ EPrints::Plugin /</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">use</span> <span class="nn">EPrints::Apache::</span><span class="n">AnApache</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">sub </span><span class="nf">handler</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">my</span><span class="p">(</span> <span class="nv">$r</span> <span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$uri</span> <span class="o">=</span> <span class="nv">$r</span><span class="o">-&gt;</span><span class="n">uri</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$repository_id</span> <span class="o">=</span> <span class="nv">$r</span><span class="o">-&gt;</span><span class="n">dir_config</span><span class="p">(</span> <span class="s">&quot;EPrints_ArchiveID&quot;</span> <span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nb">defined</span> <span class="nv">$repository_id</span> <span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">DECLINED</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">my</span> <span class="nv">$repository</span> <span class="o">=</span> <span class="nn">EPrints::</span><span class="n">Repository</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span> <span class="nv">$repository_id</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span> <span class="nv">$uri</span> <span class="o">=~</span> <span class="sr">m! ^\/profile\/([0-9a-zA-Z]+)$ !x</span> <span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="c1"># Find the user and if found set the appropriate filename for the response object.</span>
+</span><span class='line'>    <span class="c1"># If the user is not found then don&#39;t do anything or return anything and this will</span>
+</span><span class='line'>    <span class="c1"># cause EPrints to respond with a 404 error.</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">DECLINED</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next we needed to add only one line to the archves/ARCHIVEID/cfg/apachevhost.conf file;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='perl'><span class='line'><span class="n">PerlTransHandler</span> <span class="nn">EPrints::Plugin::MePrints::Apache::</span><span class="n">Rewrite</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>After a server reset we had the pretty URLs for the profile pages. This works thanks to the PerlTransHandler statement in the apachevhost.conf file. What this does is add a handler to the chain of handlers to be run. By default in EPrints there is only one handler and that is the default one. What we have done with the change above is add a handler into the chain before that. The handler method in EPrints::Plugin::MePrints::Apache::Rewrite gets called and if it gets a match for profile then it goes ahead and handles it. The &#8220;return DECLINED&#8221; tells Apache that it should move onto the next URI translation handler in the chain.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2009/08/05/prototype-element-update-confusion/">Prototype Element Update Confusion</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2009-08-05T00:00:00+01:00" pubdate data-updated="true">Aug 5<span>th</span>, 2009</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>At work we are currently working on reimplementing a piece of software called SNEEP. SNEEP is a plugin for repository software called EPrints which is developed at the University of Southampton. According to the <a href="http://roar.eprints.org">Registry of Open Access Repositories (ROAR)</a> EPrints currently has 333 installations around the world as of 6th August 2009. As part of the SNEEP plugin we have been adding in the ability to edit comments and notes using AJAX meaning that users don’t have to leave the deposit page to author their comments or notes.</p>
+
+<p>EPrints comes with the <a href="http://prototypejs.org">Prototype</a> and <a href="http://script.aculo.us/">Scriptaculous</a> JavaScript libraries installed so we had to use these as opposed to my regular choice of <a href="http://jquery.com">jQuery</a>. Owing to the static approach used for generating the document views in EPrints we had to inject the whole comments section of the document using AJAX. We did this by having the server generate the DOM and then sending it back to the browser which injects it into the page. This way the page can dynamically load the comments box depending on if a user is logged in or not.</p>
+
+<p>Initially we managed to get the code running with Firefox and Safari but we had no joy with the code in IE. Here is some of the code that was originally used.</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">sneepCommentFormInit</span><span class="p">(</span><span class="nx">transport</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="c1">// Load in the HTML generated by the server side script</span>
+</span><span class='line'>  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ep_sneep_main&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">(</span><span class="nx">transport</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// If the server sent back a form so the user can write a new comment</span>
+</span><span class='line'>  <span class="c1">// then we need to remove the old submit button and add one which is</span>
+</span><span class='line'>  <span class="c1">// attached to one of our JavaScript functions.</span>
+</span><span class='line'>  <span class="nx">$$</span><span class="p">(</span><span class="s2">&quot;.ep_sneep_comment_form_container&quot;</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">submitButton</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">submitButton</span><span class="p">.</span><span class="nx">writeAttribute</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;button&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">submitButton</span><span class="p">.</span><span class="nx">writeAttribute</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;sneep_comment_submit&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">submitButton</span><span class="p">.</span><span class="nx">writeAttribute</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;sneep_comment_submit&quot;</span><span class="p">).</span><span class="nx">readAttribute</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">));</span>
+</span><span class='line'>    <span class="nx">submitButton</span><span class="p">.</span><span class="nx">observe</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">sneepCommentFormSubmit</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;sneep_comment_submit&quot;</span><span class="p">).</span><span class="nx">remove</span><span class="p">();</span>
+</span><span class='line'>    <span class="nx">element</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">submitButton</span><span class="p">);</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">inputcallback</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">inputcallback</span><span class="p">.</span><span class="nx">writeAttribute</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;hidden&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">inputcallback</span><span class="p">.</span><span class="nx">writeAttribute</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;callback&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">inputcallback</span><span class="p">.</span><span class="nx">writeAttribute</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nx">element</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">inputcallback</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">Event</span><span class="p">.</span><span class="nx">observe</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">rm</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/(https?:\/\/.*)\/(\d+)\/?/</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">rm</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">new</span> <span class="nx">Ajax</span><span class="p">.</span><span class="nx">Request</span><span class="p">(</span><span class="nx">rm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;/cgi/sneep/view_sneep?eprintid=&#39;</span><span class="o">+</span><span class="nx">rm</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;&amp;amp;type=comment&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">onCreate</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// Put up a loading message</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>      <span class="nx">onComplete</span><span class="o">:</span> <span class="nx">sneepCommentFormInit</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The problem appeared to be that IE does not finish loading the updated content before attempting to add the hidden field and attaching a new submit button which calls our client side method rather than allowing the form to submit straight back to the server.</p>
+
+<p>The solution we chose for this issue was to modify the initial on load function in the following way;</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">Event</span><span class="p">.</span><span class="nx">observe</span><span class="p">(</span><span class="nb">window</span><span class="p">,</span> <span class="s1">&#39;load&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">rm</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/(https?:\/\/.*)\/(\d+)\/?/</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">rm</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">new</span> <span class="nx">Ajax</span><span class="p">.</span><span class="nx">Request</span><span class="p">(</span><span class="nx">rm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;/cgi/sneep/view_sneep?eprintid=&#39;</span><span class="o">+</span><span class="nx">rm</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;&amp;amp;type=comment&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">onCreate</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// Put up a loading message</span>
+</span><span class='line'>      <span class="p">},</span>
+</span><span class='line'>      <span class="nx">onComplete</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">transport</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ep_sneep_main&#39;</span><span class="p">).</span><span class="nx">update</span><span class="p">(</span><span class="nx">transport</span><span class="p">.</span><span class="nx">responseText</span><span class="o">+</span>
+</span><span class='line'>          <span class="s2">&quot;&lt;script type=\&quot;text/javascript\&quot;&gt;&quot;</span><span class="o">+</span>
+</span><span class='line'>          <span class="s2">&quot;sneepCommentFormInit();&quot;</span><span class="o">+</span>
+</span><span class='line'>          <span class="s2">&quot;&lt;/script&gt;&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">});</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Basically in this code we removed the code from sneepCommentFormInit() that handles the returned text and put it inside the anonymous onComplete method. We also appended some JavaScript that gets executed as soon as it is evaluated. This means that the form initialization code is only run once all of the HTML has been interpreted and loaded meaning that IE now has the submit intercept function correctly attached.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/11/02/customised-uinavigationbar-background-in-ios-4-and-5/">Customised UINavigationBar background in iOS 4 and 5</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/05/14/creating-a-url-query-string-using-an-nsdictionary/">Creating a URL query string using an NSDictionary</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/01/15/android-on-os-x-without-eclipse/">Android development on OS X without Eclipse</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2010/04/22/virtualbox-sdk-machine-status/">VirtualBox SDK Machine Status</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2009/10/13/zend-framework-and-twig/">Zend Framework and Twig</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Marcus Ramsden -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
